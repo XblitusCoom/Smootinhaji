@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<title> Copyright by smooting </title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap');
+
+:root{
+  --leaf:#ff6ec7;
+  --leaf-dark:#ff6ec7;
+  --dew:#00ffff;
+  --bg:#0d0d1a;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Quicksand',sans-serif}
+body{
+  height:100vh;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(160deg,var(--bg),#1a1a2e);
+  overflow:hidden;color:#fff;
+}
+
+/* ---------- floating leaves ---------- */
+.leaf{
+  position:fixed;width:40px;height:40px;
+  background:var(--leaf);
+  mask:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66C7.7 16.7 15.73 15.2 17 8m-7-4a2 2 0 002-2 2 2 0 00-2 2m4 0a2 2 0 002-2 2 2 0 00-2 2M7 6a2 2 0 002-2 2 2 0 00-2 2m12 2a2 2 0 002-2 2 2 0 00-2 2m-3 11a2 2 0 002-2 2 2 0 00-2 2m-8-2a2 2 0 002-2 2 2 0 00-2 2m3 3a2 2 0 002-2 2 2 0 00-2 2m8-4a2 2 0 002-2 2 2 0 00-2 2M5 11a2 2 0 002-2 2 2 0 00-2 2m5 6a2 2 0 002-2 2 2 0 00-2 2m8-8a2 2 0 002-2 2 2 0 00-2 2"/></svg>') center / contain no-repeat;
+  -webkit-mask:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66C7.7 16.7 15.73 15.2 17 8m-7-4a2 2 0 002-2 2 2 0 00-2 2m4 0a2 2 0 002-2 2 2 0 00-2 2M7 6a2 2 0 002-2 2 2 0 00-2 2m12 2a2 2 0 002-2 2 2 0 00-2 2m-3 11a2 2 0 002-2 2 2 0 00-2 2m-8-2a2 2 0 002-2 2 2 0 00-2 2m3 3a2 2 0 002-2 2 2 0 00-2 2m8-4a2 2 0 002-2 2 2 0 00-2 2M5 11a2 2 0 002-2 2 2 0 00-2 2m5 6a2 2 0 002-2 2 2 0 00-2 2m8-8a2 2 0 002-2 2 2 0 00-2 2"/></svg>') center / contain no-repeat;
+  opacity:.15;
+  animation:sway 12s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes sway{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-20px) rotate(5deg)}}
+
+/* ---------- card ---------- */
+.card{
+  width:90%;max-width:400px;
+  background:rgba(20,20,40,.6);
+  backdrop-filter:blur(12px);
+  border:2px solid rgba(255,255,255,.2);
+  border-radius:25px;
+  padding:2rem;
+  box-shadow:0 0 30px rgba(255,110,199,.4);
+  animation:fadeIn 1s;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+.logo{
+  text-align:center;color:var(--leaf-dark);font-size:1.6rem;font-weight:700;
+  margin-bottom:1.2rem;
+  text-shadow:0 0 10px var(--leaf),0 0 20px var(--leaf-dark);
+}
+.logo i{margin-right:.5rem;color:var(--leaf);animation:leafFloat 3s ease-in-out infinite}
+@keyframes leafFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+/* ---------- toggle ---------- */
+.toggle{display:flex;background:rgba(255,255,255,.05);border-radius:30px;padding:4px;margin-bottom:1.2rem}
+.toggle button{flex:1;border:none;background:transparent;color:#ccc;padding:.5rem 0;border-radius:30px;cursor:pointer;transition:.3s}
+.toggle button.active{background:var(--leaf);color:#fff;box-shadow:0 0 15px rgba(255,110,199,.4)}
+
+/* ---------- drop ---------- */
+.drop-area{position:relative;border:2px dashed rgba(255,110,199,.5);border-radius:20px;padding:2rem 1rem;text-align:center;color:#ccc;transition:.3s;overflow:hidden;}
+.drop-area.dragover{border-color:var(--dew);background:rgba(0,255,255,.1);transform:scale(1.02);}
+.drop-area input[type=file]{position:absolute;width:100%;height:100%;left:0;top:0;opacity:0;cursor:pointer;}
+#fileName{font-size:.9rem;margin-top:.5rem;color:var(--dew);}
+
+/* ripple on drop */
+.ripple{position:absolute;border-radius:50%;background:rgba(255,110,199,.3);transform:scale(0);animation:ripple 0.6s linear;}
+@keyframes ripple{to{transform:scale(4);opacity:0}}
+
+/* ---------- prompt ---------- */
+#promptBox{margin:1rem 0 1.2rem}
+.promptInp{width:100%;padding:.7rem 1rem;border-radius:30px;border:none;outline:none;background:rgba(255,255,255,.08);color:#fff;transition:.3s}
+.promptInp:focus{box-shadow:0 0 15px rgba(255,110,199,.4);}
+
+/* ---------- button ---------- */
+.btn{width:100%;padding:.8rem;border:none;border-radius:30px;background:linear-gradient(90deg,var(--leaf),var(--leaf-dark));color:#fff;font-weight:600;cursor:pointer;transition:.3s;position:relative;overflow:hidden;}
+.btn:hover{transform:scale(1.03);box-shadow:0 0 25px rgba(255,110,199,.5);}
+.btn:disabled{filter:grayscale(1);cursor:not-allowed}
+.btn i{margin-right:.4rem;}
+.btn::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,.4) 0%,transparent 60%);transform:rotate(30deg);transition:all .5s;}
+.btn:hover::after{top:-10%;left:-10%;width:150%;height:150%;}
+
+/* ---------- progress ---------- */
+.progress-box{color:var(--leaf-dark);font-size:.9rem;margin-top:1rem}
+.bar{width:100%;height:6px;background:rgba(255,110,199,.2);border-radius:3px;overflow:hidden}
+.bar div{height:100%;width:0;background:linear-gradient(90deg,var(--dew),var(--leaf));box-shadow:0 0 10px rgba(255,110,199,.4);transition:width .3s}
+
+/* ---------- result ---------- */
+#resultBox{text-align:center;margin-top:1.2rem;animation:zoomIn .7s}
+@keyframes zoomIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
+#resultImg{width:100%;border-radius:20px;box-shadow:0 0 25px rgba(255,110,199,.4);}
+.downBtn{margin-top:.8rem;display:inline-block;padding:.6rem 1.4rem;background:var(--leaf);color:#fff;border-radius:30px;text-decoration:none;font-weight:600;transition:.3s}
+.downBtn:hover{background:var(--leaf-dark);color:#fff;box-shadow:0 0 15px rgba(255,110,199,.5)}
+
+.hidden{display:none}
+</style>
+</head>
+<body>
+
+<!-- floating leaves -->
+<div class="leaf" style="top:10%;left:10%"></div>
+<div class="leaf" style="top:20%;right:15%"></div>
+<div class="leaf" style="bottom:10%;left:25%"></div>
+<div class="leaf" style="bottom:30%;right:5%"></div>
+
+<div class="card">
+  <div class="logo"><i class="fa-solid fa-leaf"></i> Smoothing AI</div>
+
+  <div class="toggle">
+    <button class="active" data-mode="edit">Img Edit</button>
+    <button data-mode="chibi">To Chibi</button>
+    <button data-mode="figure">To Figure</button>
+  </div>
+
+  <div id="error" class="hidden" style="color:#ff7aa2;font-size:.85rem;margin-bottom:.8rem"></div>
+
+  <form id="form">
+    <div class="drop-area" id="dropArea">
+      <i class="fa-solid fa-cloud-arrow-up fa-2x" style="color:var(--dew)"></i>
+      <p>Drag & drop gambar ke sini</p>
+      <input type="file" id="fileInp" accept="image/*" required>
+      <div id="fileName"></div>
+    </div>
+
+    <div id="promptBox">
+      <input class="promptInp" id="promptInp" placeholder="Prompt singkat…">
+    </div>
+
+    <button class="btn" id="submitBtn" type="submit">
+      <i class="fa-solid fa-paper-plane"></i> Proses
+    </button>
+  </form>
+
+  <div id="progressBox" class="progress-box hidden">
+    Proses…
+    <div class="bar"><div id="bar"></div></div>
+  </div>
+
+  <div id="resultBox" class="hidden">
+    <img id="resultImg" src="" alt="result">
+    <br>
+    <a class="downBtn" id="downBtn" href="#" download="result.png">
+      <i class="fa-solid fa-download"></i> Download
+    </a>
+  </div>
+</div>
+
+<script>
+const dropArea=document.getElementById('dropArea');
+const fileInp=document.getElementById('fileInp');
+const fileName=document.getElementById('fileName');
+const promptBox=document.getElementById('promptBox');
+const form=document.getElementById('form');
+const submitBtn=document.getElementById('submitBtn');
+const progressBox=document.getElementById('progressBox');
+const bar=document.getElementById('bar');
+const resultBox=document.getElementById('resultBox');
+const resultImg=document.getElementById('resultImg');
+const downBtn=document.getElementById('downBtn');
+const error=document.getElementById('error');
+let mode='edit';
+
+document.querySelectorAll('.toggle button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.toggle button').forEach(btn=>btn.classList.remove('active'));
+    b.classList.add('active'); 
+    mode=b.dataset.mode;
+    promptBox.style.display=mode==='edit'?'block':'none';
+  })
+});
+
+/* drag-drop */
+;['dragenter','dragover','dragleave','drop'].forEach(evt=>{
+  dropArea.addEventListener(evt,e=>{e.preventDefault();e.stopPropagation()});
+});
+['dragenter','dragover'].forEach(evt=>{
+  dropArea.addEventListener(evt,(e)=>{
+    dropArea.classList.add('dragover');
+    dropArea.appendChild(createRipple(e));
+  })
+});
+['dragleave','drop'].forEach(evt=>{
+  dropArea.addEventListener(evt,()=>{
+    dropArea.classList.remove('dragover');
+  })
+});
+dropArea.addEventListener('drop',e=>{
+  const f=e.dataTransfer.files[0];
+  if(f&&f.type.startsWith('image')){
+    fileInp.files=e.dataTransfer.files;
+    changeFile();
+  }
+});
+fileInp.addEventListener('change',changeFile);
+function changeFile(){
+  const f=fileInp.files[0];
+  fileName.textContent=f?f.name:'';
+}
+function createRipple(e){
+  const r=document.createElement('div');
+  r.classList.add('ripple');
+  r.style.left=(e.clientX - dropArea.getBoundingClientRect().left) + 'px';
+  r.style.top=(e.clientY - dropArea.getBoundingClientRect().top) + 'px';
+  return r;
+}
+
+form.addEventListener('submit',async e=>{
+  e.preventDefault();
+  error.classList.add('hidden');
+  const f=fileInp.files[0];
+  if(!f)return err('Pilih gambar terlebih dahulu!');
+  if(mode==='edit'&&!promptInp.value.trim())return err('Prompt tidak boleh kosong!');
+  submitBtn.disabled=true;
+  progressBox.classList.remove('hidden');
+  resultBox.classList.add('hidden');
+  animateBar();
+  try{
+    const url=await upload(f);
+    let api='';
+    if(mode==='edit')api=`https://api.fikmydomainsz.xyz/ai/nanobnna?url=${encodeURIComponent(url)}&prompt=${encodeURIComponent(promptInp.value.trim())}`;
+    else if(mode==='chibi')api=`https://api.fikmydomainsz.xyz/imagecreator/tochibi?url=${encodeURIComponent(url)}`;
+    else api=`https://api.fikmydomainsz.xyz/imagecreator/tofigur?url=${encodeURIComponent(url)}`;
+    const res=await fetch(api);
+    const j=await res.json();
+    if(!j.status||!j.result)throw new Error(j.message||'API error');
+    resultImg.src=j.result;
+    downBtn.href=j.result;
+    progressBox.classList.add('hidden');
+    resultBox.classList.remove('hidden');
+  }catch(e){
+    err(e.message||'Gagal proses');
+    progressBox.classList.add('hidden');
+  }
+  finally{submitBtn.disabled=false}
+});
+
+async function upload(f){
+  const fd=new FormData();
+  fd.append('files',f,f.name);
+  const r=await fetch('https://cdn.yupra.my.id/upload',{method:'POST',body:fd,headers:{'User-Agent':'Mozilla/5.0'}});
+  const j=await r.json();
+  if(j.success&&j.files?.[0])return 'https://cdn.yupra.my.id'+j.files[0].url;
+  throw new Error('Upload gagal');
+}
+
+function animateBar(){
+  let w=0;
+  bar.style.width='0';
+  const t=setInterval(()=>{
+    w+=Math.random()*18;
+    if(w>=90){clearInterval(t);w=90;}
+    bar.style.width=w+'%';
+  },300);
+}
+
+function err(m){
+  error.textContent=m;
+  error.classList.remove('hidden');
+}
+</script>
+</body>
+</html>
